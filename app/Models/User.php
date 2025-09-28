@@ -53,7 +53,6 @@ class User extends Authenticatable
         ];
     }
 
-
     protected static function boot()
     {
         parent::boot();
@@ -68,5 +67,10 @@ class User extends Authenticatable
                 $model->nama_creator = Auth::user()->name;
             }
         });
+    }
+
+    public function opd_pengguna()
+    {
+        return $this->hasOne(OpdPengguna::class, 'id_user', 'id');
     }
 }

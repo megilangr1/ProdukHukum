@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-3">
-    <x-page-header title="Data Pengguna">
+    <x-page-header title="Data Akun OPD">
         <button type="button" class="btn btn-neutral btn-sm" wire:click="showForm(true)"
             @if ($form) disabled @endif>Tambah Data</button>
     </x-page-header>
@@ -8,7 +8,7 @@
         <div class="card-body p-0">
             <div class="card-title px-5 py-3 border-b border-b-slate-300 text-sm flex items-center justify-between">
                 <div class="flex-auto">
-                    Formulir {{ $editData ? 'Ubah' : 'Tambah' }} Pengguna
+                    Formulir {{ $editData ? 'Ubah' : 'Tambah' }} Akun OPD
                 </div>
 
                 <button type="button" class="btn bg-red-500 text-white btn-xs" wire:click="showForm(false)">
@@ -17,23 +17,24 @@
             </div>
             <form wire:submit="actionForm">
                 <div class="w-full grid grid-cols-6 px-6 pb-2 gap-3">
-                    <div class="col-span-6 md:col-span-2">
-                        <label for="roles"
-                            class="block text-sm font-medium mb-2 {{ $errors->has('state.roles') ? 'text-red-500' : '' }}">
-                            Hak Akses :
+                    <div class="col-span-6 md:col-span-4">
+                        <label for="id_opd"
+                            class="block text-sm font-medium mb-2 {{ $errors->has('state.id_opd') ? 'text-red-500' : '' }}">
+                            OPD :
                             <span class="text-red-500 text-xs">*</span>
                         </label>
                         <div class="relative">
-                            <select wire:model="state.roles" id="roles" name="roles"
-                                class="w-full select @error('state.roles') select-error @enderror"
-                                aria-describedby="roles-helper" required>
-                                <option value="">Pilih Hak Akses</option>
-                                @foreach ($staticData['roles'] as $item)
-                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                            <select wire:model="state.id_opd" id="id_opd" name="id_opd"
+                                class="w-full select @error('state.id_opd') select-error @enderror"
+                                aria-describedby="id_opd-helper" required>
+                                <option value="">Pilih OPD</option>
+                                @foreach ($staticData['opd'] as $item)
+                                    <option value="{{ $item->uuid }}">{{ $item->kode_opd }} - {{ $item->nama_opd }}
+                                    </option>
                                 @endforeach
                             </select>
                             <div
-                                class="absolute inset-y-0 end-0 {{ $errors->has('state.roles') ? 'flex' : 'hidden' }} items-center pointer-events-none pe-3">
+                                class="absolute inset-y-0 end-0 {{ $errors->has('state.id_opd') ? 'flex' : 'hidden' }} items-center pointer-events-none pe-3">
                                 <svg class="shrink-0 size-4 text-red-500" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -46,26 +47,26 @@
                                 </svg>
                             </div>
                         </div>
-                        @error('state.roles')
-                            <p class="text-xs text-red-600 mt-1" id="roles-helper">
+                        @error('state.id_opd')
+                            <p class="text-xs text-red-600 mt-1" id="id_opd-helper">
                                 {{ $message }}
                             </p>
                         @enderror
                     </div>
 
                     <div class="col-span-6 md:col-span-2">
-                        <label for="name"
-                            class="block text-sm font-medium mb-2 {{ $errors->has('state.name') ? 'text-red-500' : '' }}">
-                            Nama Pengguna :
+                        <label for="nip"
+                            class="block text-sm font-medium mb-2 {{ $errors->has('state.nip') ? 'text-red-500' : '' }}">
+                            NIP :
                             <span class="text-red-500 text-xs">*</span>
                         </label>
                         <div class="relative">
-                            <input type="text" wire:model="state.name" id="name" name="name"
-                                class="w-full input @error('state.name') input-error @enderror"
-                                aria-describedby="name-helper" placeholder="Masukan Nama Pengguna..." required
+                            <input type="text" wire:model="state.nip" id="nip" name="nip"
+                                class="w-full input @error('state.nip') input-error @enderror"
+                                aria-describedby="nip-helper" placeholder="Masukan NIP..." required
                                 autocomplete="false">
                             <div
-                                class="absolute inset-y-0 end-0 {{ $errors->has('state.name') ? 'flex' : 'hidden' }} items-center pointer-events-none pe-3">
+                                class="absolute inset-y-0 end-0 {{ $errors->has('state.nip') ? 'flex' : 'hidden' }} items-center pointer-events-none pe-3">
                                 <svg class="shrink-0 size-4 text-red-500" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -78,8 +79,72 @@
                                 </svg>
                             </div>
                         </div>
-                        @error('state.name')
-                            <p class="text-xs text-red-600 mt-1" id="name-helper">
+                        @error('state.nip')
+                            <p class="text-xs text-red-600 mt-1" id="nip-helper">
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
+                    <div class="col-span-6 md:col-span-2">
+                        <label for="nama_lengkap"
+                            class="block text-sm font-medium mb-2 {{ $errors->has('state.nama_lengkap') ? 'text-red-500' : '' }}">
+                            Nama Lengkap :
+                            <span class="text-red-500 text-xs">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="text" wire:model="state.nama_lengkap" id="nama_lengkap" name="nama_lengkap"
+                                class="w-full input @error('state.nama_lengkap') input-error @enderror"
+                                aria-describedby="nama_lengkap-helper" placeholder="Masukan Nama Lengkap..." required
+                                autocomplete="false">
+                            <div
+                                class="absolute inset-y-0 end-0 {{ $errors->has('state.nama_lengkap') ? 'flex' : 'hidden' }} items-center pointer-events-none pe-3">
+                                <svg class="shrink-0 size-4 text-red-500" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" x2="12" y1="8" y2="12">
+                                    </line>
+                                    <line x1="12" x2="12.01" y1="16" y2="16">
+                                    </line>
+                                </svg>
+                            </div>
+                        </div>
+                        @error('state.nama_lengkap')
+                            <p class="text-xs text-red-600 mt-1" id="nama_lengkap-helper">
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
+                    <div class="col-span-6 md:col-span-2">
+                        <label for="jabatan"
+                            class="block text-sm font-medium mb-2 {{ $errors->has('state.jabatan') ? 'text-red-500' : '' }}">
+                            Jabatan :
+                            <span class="text-red-500 text-xs">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="text" wire:model="state.jabatan" id="jabatan" name="jabatan"
+                                class="w-full input @error('state.jabatan') input-error @enderror"
+                                aria-describedby="jabatan-helper" placeholder="Masukan Jabatan..." required
+                                autocomplete="false">
+                            <div
+                                class="absolute inset-y-0 end-0 {{ $errors->has('state.jabatan') ? 'flex' : 'hidden' }} items-center pointer-events-none pe-3">
+                                <svg class="shrink-0 size-4 text-red-500" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" x2="12" y1="8" y2="12">
+                                    </line>
+                                    <line x1="12" x2="12.01" y1="16" y2="16">
+                                    </line>
+                                </svg>
+                            </div>
+                        </div>
+                        @error('state.jabatan')
+                            <p class="text-xs text-red-600 mt-1" id="jabatan-helper">
                                 {{ $message }}
                             </p>
                         @enderror
@@ -213,9 +278,11 @@
             <thead>
                 <tr>
                     <th class="text-center" width="8%">No.</th>
-                    <td>Nama</td>
+                    <td>OPD</td>
+                    <td>NIP</td>
+                    <td>Nama Lengkap</td>
+                    <td>Jabatan</td>
                     <td>Email</td>
-                    <td>Hak Akses</td>
                     <td>Pembuat</td>
                     <th class="text-center" width="10%">Aksi</th>
                 </tr>
@@ -224,9 +291,11 @@
                 @forelse ($data as $item)
                     <tr>
                         <th class="text-center bg-slate-200">{{ $loop->iteration }}.</th>
-                        <td>{{ $item->name }}</td>
-                        <td>{{ $item->email }}</td>
-                        <td>{{ $item->roles[0]['name'] ?? '-' }}</td>
+                        <td>{{ $item->opd->kode_opd ?? '-' }} | {{ $item->opd->nama_opd ?? '-' }}</td>
+                        <td>{{ $item->nip }}</td>
+                        <td>{{ $item->nama_lengkap }}</td>
+                        <td>{{ $item->jabatan }}</td>
+                        <td>{{ $item->user->email }}</td>
                         <td>{{ $item->nama_creator }}</td>
                         <th class="text-center">
                             <button type="button" class="btn btn-xs btn-neutral w-full font-normal tracking-wider"
@@ -248,7 +317,7 @@
                                 <button type="button" popovertarget="popover-{{ $loop->iteration }}"
                                     class="btn btn-xs btn-outline w-full font-normal tracking-wider delete-btn"
                                     popovertarget="popover-{{ $loop->iteration }}" data-uuid="{{ $item->uuid }}"
-                                    data-target="user.main-index">
+                                    data-target="opd-pengguna.main-index">
                                     Hapus Data
                                 </button>
                             </div>
@@ -256,7 +325,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center p-2">Belum Ada Data</td>
+                        <td colspan="8" class="text-center p-2">Belum Ada Data</td>
                     </tr>
                 @endforelse
             </tbody>

@@ -87,6 +87,16 @@
                                             Akun Pengguna
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="{{ route('opd') }}" wire:current="menu-active" wire:navigate>
+                                            Daftar OPD
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('opd-pengguna') }}" wire:current="menu-active" wire:navigate>
+                                            Akun OPD
+                                        </a>
+                                    </li>
                                     <li><a>Submenu 2</a></li>
                                     <li>
                                         <details>
