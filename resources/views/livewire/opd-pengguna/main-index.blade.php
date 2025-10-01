@@ -17,7 +17,7 @@
             </div>
             <form wire:submit="actionForm">
                 <div class="w-full grid grid-cols-6 px-6 pb-2 gap-3">
-                    <div class="col-span-6 md:col-span-4">
+                    {{-- <div class="col-span-6 md:col-span-4">
                         <label for="id_opd"
                             class="block text-sm font-medium mb-2 {{ $errors->has('state.id_opd') ? 'text-red-500' : '' }}">
                             OPD :
@@ -33,6 +33,60 @@
                                     </option>
                                 @endforeach
                             </select>
+                            <div
+                                class="absolute inset-y-0 end-0 {{ $errors->has('state.id_opd') ? 'flex' : 'hidden' }} items-center pointer-events-none pe-3">
+                                <svg class="shrink-0 size-4 text-red-500" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" x2="12" y1="8" y2="12">
+                                    </line>
+                                    <line x1="12" x2="12.01" y1="16" y2="16">
+                                    </line>
+                                </svg>
+                            </div>
+                        </div>
+                        @error('state.id_opd')
+                            <p class="text-xs text-red-600 mt-1" id="id_opd-helper">
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div> --}}
+
+                    <div class="col-span-6 md:col-span-4">
+                        <div class="flex flex-col sm:flex-row justify-between gap-1 mb-2">
+                            <label for="id_opd"
+                                class="flex-auto block text-sm font-medium {{ $errors->has('state.id_opd') ? 'text-red-500' : '' }}">
+                                Organisasi Perangkat Daerah (OPD) :
+                                <span class="text-red-500 text-xs">*</span>
+                            </label>
+                            <div class="ms-auto">
+                                <div class="flex gap-x-1">
+                                    @if ($state['id_opd'] != null)
+                                        <span class="badge badge-xs badge-error cursor-pointer text-white"
+                                            wire:click="resetSelectedOpd">
+                                            <svg class="shrink-0 size-2" xmlns="http://www.w3.org/2000/svg"
+                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" class="lucide lucide-rotate-ccw">
+                                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                                                <path d="M3 3v5h5" />
+                                            </svg>
+
+                                            Reset Pilihan
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <input type="text" id="id_opd" name="id_opd"
+                                class="w-full input @error('state.id_opd') input-error @enderror"
+                                aria-describedby="id_opd-helper"
+                                value="{{ $state['kode_opd'] != null ? $state['kode_opd'] . ' - ' . $state['nama_opd'] : '' }}"
+                                placeholder="Pilih Organisasi Perangkat Daerah (OPD)..." required autocomplete="false"
+                                wire:click="$dispatchTo('modal.data-opd', 'open-data-opd-modal')" readonly>
                             <div
                                 class="absolute inset-y-0 end-0 {{ $errors->has('state.id_opd') ? 'flex' : 'hidden' }} items-center pointer-events-none pe-3">
                                 <svg class="shrink-0 size-4 text-red-500" xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +147,8 @@
                             <span class="text-red-500 text-xs">*</span>
                         </label>
                         <div class="relative">
-                            <input type="text" wire:model="state.nama_lengkap" id="nama_lengkap" name="nama_lengkap"
+                            <input type="text" wire:model="state.nama_lengkap" id="nama_lengkap"
+                                name="nama_lengkap"
                                 class="w-full input @error('state.nama_lengkap') input-error @enderror"
                                 aria-describedby="nama_lengkap-helper" placeholder="Masukan Nama Lengkap..." required
                                 autocomplete="false">
@@ -265,6 +320,11 @@
                             {{ isset($editData) ? 'Batalkan' : 'Reset Input' }}
                         </button>
                     </div>
+                    <div class="col-span-6 md:col-span-2 lg:col-span-1">
+                        <button type="button" class="btn btn-error w-full btn-sm" wire:click="dummy">
+                            Dummy
+                        </button>
+                    </div>
                 </div>
             </form>
             <div class="card-actions text-xs font-semibold text-slate-600 bg-slate-200 rounded-b-lg px-5 py-2">
@@ -335,4 +395,10 @@
     <div class="w-full">
         {{ $data->links() }}
     </div>
+
+    <button type="button" class="btn" wire:click="$dispatchTo('modal.data-opd', 'open-data-opd-modal')">
+        Open Modal
+    </button>
+
+    <livewire:modal.data-opd />
 </div>

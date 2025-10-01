@@ -26,6 +26,9 @@ class MainIndex extends Component
     #[Locked]
     public $params = [
         'id_opd' => null,
+        'kode_opd' => null,
+        'nama_opd' => null,
+
         'nip' => null,
         'nama_lengkap' => null,
         'jabatan' => null,
@@ -87,6 +90,8 @@ class MainIndex extends Component
 
         if ($edit) {
             $this->state['id_opd'] = $this->editData->opd->uuid;
+            $this->state['kode_opd'] = $this->editData->opd->kode_opd;
+            $this->state['nama_opd'] = $this->editData->opd->nama_opd;
             $this->state['nip'] = $this->editData->nip;
             $this->state['nama_lengkap'] = $this->editData->nama_lengkap;
             $this->state['jabatan'] = $this->editData->jabatan;
@@ -239,5 +244,29 @@ class MainIndex extends Component
             DB::rollBack();
             (new MainHelper)->doAlert();
         }
+    }
+
+
+    // Event
+    #[On('selectedOpd')]
+    public function selectedOpd($value)
+    {
+        if ($value !== null) {
+            $this->state['id_opd'] = $value['uuid'];
+            $this->state['kode_opd'] = $value['kode_opd'];
+            $this->state['nama_opd'] = $value['nama_opd'];
+        }
+    }
+
+    public function resetSelectedOpd()
+    {
+        $this->state['id_opd'] = null;
+        $this->state['kode_opd'] = null;
+        $this->state['nama_opd'] = null;
+    }
+
+    public function dummy()
+    {
+        dd($this->state);
     }
 }
