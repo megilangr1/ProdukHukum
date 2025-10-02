@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\MainController;
 use App\Livewire\Backend\Dashboard;
+use App\Livewire\JenisProdukHukum\MainIndex as JenisPhMainIndex;
 use App\Livewire\Opd\MainIndex as OpdMainIndex;
 use App\Livewire\OpdPengguna\MainIndex as OpdPenggunaMainIndex;
 use App\Livewire\User\MainIndex as UserMainIndex;
@@ -25,5 +26,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pengguna', UserMainIndex::class)->name('pengguna');
     Route::get('/opd', OpdMainIndex::class)->name('opd');
     Route::get('/opd-pengguna', OpdPenggunaMainIndex::class)->name('opd-pengguna');
+
+    Route::get('/jenis-produk-hukum', JenisPhMainIndex::class)->name('jenis-produk-hukum');
   });
 });

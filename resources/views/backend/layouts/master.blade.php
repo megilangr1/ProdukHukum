@@ -109,6 +109,12 @@
                                             Akun OPD
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="{{ route('jenis-produk-hukum') }}" wire:current="menu-active"
+                                            wire:navigate>
+                                            Jenis Produk Hukum
+                                        </a>
+                                    </li>
                                     <li><a>Submenu 2</a></li>
                                     <li>
                                         <details>
