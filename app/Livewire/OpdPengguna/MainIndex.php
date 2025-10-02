@@ -26,9 +26,6 @@ class MainIndex extends Component
     #[Locked]
     public $params = [
         'id_opd' => null,
-        'kode_opd' => null,
-        'nama_opd' => null,
-
         'nip' => null,
         'nama_lengkap' => null,
         'jabatan' => null,
@@ -47,6 +44,17 @@ class MainIndex extends Component
         'opd' => []
     ];
     // End Static Data
+
+    // Tom Select
+    #[Locked]
+    public $tomSelectData = [
+        'opd' => [
+            'selectId' => 'opd',
+            'value' => '',
+            'option' => null,
+        ],
+    ];
+    // End Tom Select
 
     public function mount()
     {
@@ -88,6 +96,8 @@ class MainIndex extends Component
         $this->resetErrorBag();
         $this->state = $this->params;
 
+        $tomSelectData = $this->tomSelectData;
+
         if ($edit) {
             $this->state['id_opd'] = $this->editData->opd->uuid;
             $this->state['kode_opd'] = $this->editData->opd->kode_opd;
@@ -98,9 +108,20 @@ class MainIndex extends Component
             $this->state['email'] = $this->editData->user->email;
             $this->state['password'] = "";
             $this->state['password_confirmation'] = "";
+
+            if ($this->editData->opd !== null) {
+                $tomSelectData['opd']['selectId'] = 'opd';
+                $tomSelectData['opd']['value'] = $this->editData->opd->uuid;
+                // $tomSelectData['opd']['option'] = [
+                //     'value' => $this->editData->opd->uuid,
+                //     'text' => $this->editData->opd->nama_opd,
+                // ];
+            }
         } else {
             $this->reset('editData');
         }
+
+        $this->dispatch('setTomSelect', $tomSelectData);
     }
 
     public function actionForm()
@@ -251,18 +272,24 @@ class MainIndex extends Component
     #[On('selectedOpd')]
     public function selectedOpd($value)
     {
+        $tomSelectData = $this->tomSelectData;
+
         if ($value !== null) {
             $this->state['id_opd'] = $value['uuid'];
-            $this->state['kode_opd'] = $value['kode_opd'];
-            $this->state['nama_opd'] = $value['nama_opd'];
+
+            $tomSelectData['opd']['selectId'] = 'opd';
+            $tomSelectData['opd']['value'] = $value['uuid'];
+            $tomSelectData['opd']['option'] = null;
         }
+
+        $this->dispatch('setTomSelect', $tomSelectData);
     }
 
     public function resetSelectedOpd()
     {
         $this->state['id_opd'] = null;
-        $this->state['kode_opd'] = null;
-        $this->state['nama_opd'] = null;
+        $tomSelectData = $this->tomSelectData;
+        $this->dispatch('setTomSelect', $tomSelectData);
     }
 
     public function dummy()

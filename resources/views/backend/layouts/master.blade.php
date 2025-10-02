@@ -8,6 +8,18 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+
+    <style>
+        .ts-control {
+            height: 40px !important;
+            padding-left: 12px !important;
+            vertical-align: middle !important;
+            font-size: 14px !important;
+            margin: 0 auto !important;
+            line-height: inherit !important;
+        }
+    </style>
+
     @stack('styles')
 </head>
 
@@ -145,6 +157,31 @@
     </main>
 
     @livewireScripts
+
+    <script>
+        function initTomSelect(selector, options = {}) {
+            const el = document.querySelector(selector);
+            if (el && !el.tomselect) {
+                new TomSelect(el, {
+                    create: false,
+                    sortField: {
+                        field: "text",
+                        direction: "asc"
+                    },
+                    plugins: ["dropdown_input"],
+                    maxItems: 1,
+                    allowEmptyOption: false,
+                    onChange(value) {
+                        Livewire.find(
+                            el.closest("[wire\\:id]").getAttribute("wire:id")
+                        ).set(el.getAttribute("wire:model"), value);
+                    },
+                    ...options,
+                });
+            }
+        }
+    </script>
+
     @stack('scripts')
 
     <script>
@@ -160,7 +197,6 @@
 
             // Event Listener Click
             mainContent.addEventListener('click', (e) => {
-
                 // Delete Btn
                 if (e.target.closest('.delete-btn')) { // aman walau ada <i> di dalam button
                     const uuid = e.target.closest('.delete-btn').dataset.uuid;
@@ -181,6 +217,31 @@
                     title: event.message || "Aksi Berhasil di-Lakukan !"
                 });
             });
+
+            // Tom Select
+            Livewire.on('setTomSelect', (data) => {
+                const selectData = Object.values(data[0] ?? []);
+
+                if (selectData != null) {
+                    selectData.forEach(value => {
+                        const el = document.getElementById(value.selectId);
+                        if (el && el.tomselect) {
+                            const ts = el.tomselect;
+                            if (value.option) {
+                                ts.addOption(value.option);
+                            }
+                            ts.setValue(value.value, true);
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
+
+    <script>
+        document.addEventListener('livewire:navigated', () => {
+            // When Navigated
         });
     </script>
 </body>

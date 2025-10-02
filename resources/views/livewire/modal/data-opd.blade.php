@@ -1,7 +1,4 @@
 <div>
-    <label for="my_modal_7" class="btn">open modal {{ $modal ? 'TRUE' : 'FALSE' }}</label>
-
-    <!-- Put this part before </body> tag -->
     <input type="checkbox" id="my_modal_7" class="modal-toggle" wire:model.live="modal" />
     <div class="modal modal-bottom sm:modal-middle" role="dialog">
         <div class="modal-box flex flex-col p-0 sm:w-[70vw] sm:max-w-full">
